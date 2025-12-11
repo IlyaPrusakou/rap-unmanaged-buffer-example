@@ -1,0 +1,55 @@
+unmanaged implementation in class zbp_r_pru_1st_node unique;
+strict ( 2 );
+
+define behavior for Zr_PRU_1ST_NODE alias FIRST_NODE
+late numbering
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) FirstKey;
+  association _par1to2 { create; }
+}
+
+define behavior for ZR_PRU_2ND_NODE alias SECOND_NODE
+late numbering
+lock dependent by _par2to1
+authorization dependent by _par2to1
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) FirstKey, SecondKey;
+  association _par2to1;
+  association _par2to3 { create; }
+}
+
+define behavior for ZR_PRU_3RD_NODE alias THIRD_NODE
+late numbering
+lock dependent by _toRoot
+authorization dependent by _toRoot
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) FirstKey, SecondKey, ThirdKey;
+  association _par3to2;
+  association _toRoot;
+  association _par3to4 { create; }
+}
+
+define behavior for ZR_PRU_4TH_NODE alias FOURTH_NODE
+late numbering
+lock dependent by _toRoot
+authorization dependent by _toRoot
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) FirstKey, SecondKey, ThirdKey, ForthKey;
+  association _par4to3;
+    association _toRoot;
+}
