@@ -49,7 +49,7 @@ authorization dependent by _toRoot
 {
   update;
   delete;
-  field ( readonly ) FirstKey, SecondKey, ThirdKey, ForthKey;
+  field ( readonly ) FirstKey, SecondKey, ThirdKey, FourthKey;
   association _par4to3;
     association _toRoot;
 }
