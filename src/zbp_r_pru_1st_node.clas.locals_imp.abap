@@ -39,6 +39,26 @@ CLASS lhc_first_node IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create.
+
+    zpru_cl_example_buffer=>prep_first_node_buffer( keys = CORRESPONDING #( entities ) ).
+
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<ls_ent>).
+
+      IF line_exists( zpru_cl_example_buffer=>st_first_node[ instance-firstkey = <ls_ent>-firstkey ] ).
+        CONTINUE.
+      ENDIF.
+
+      APPEND INITIAL LINE TO zpru_cl_example_buffer=>st_first_node ASSIGNING FIELD-SYMBOL(<ls_target>).
+      <ls_target>-instance-firstkey = <ls_ent>-firstkey.
+      <ls_target>-instance-firstfield = <ls_ent>-firstfield.
+      <ls_target>-changed = abap_true.
+      <ls_target>-pid = cl_system_uuid=>create_uuid_x16_static( ).
+
+      APPEND INITIAL LINE TO mapped-first_node ASSIGNING FIELD-SYMBOL(<ls_map>).
+      <ls_map>-%cid = <ls_ent>-%cid.
+      <ls_map>-%pid = <ls_target>-pid.
+      <ls_map>-firstkey = <ls_target>-instance-firstkey.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD update.
@@ -222,9 +242,30 @@ CLASS lsc_zr_pru_1st_node IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD adjust_numbers.
+
+  LOOP AT zpru_cl_example_buffer=>st_first_node ASSIGNING FIELD-SYMBOL(<ls_first>).
+    APPEND INITIAL LINE TO  mapped-first_node ASSIGNING FIELD-SYMBOL(<ls_first_TARGET>).
+      <ls_first_TARGET>-firstkey = <ls_first>-instance-FirstKey.
+      <ls_first_TARGET>-%pre-%pid     = <ls_first>-pid.
+      <ls_first_TARGET>-%pre-%tmp-FirstKey = <ls_first>-instance-FirstKey.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD save.
+
+    DATA lt_mod TYPE STANDARD TABLE OF zpru_1st_node WITH EMPTY KEY.
+
+    LOOP AT zpru_cl_example_buffer=>st_first_node ASSIGNING FIELD-SYMBOL(<ls_buffer>).
+
+      APPEND INITIAL LINE TO lt_mod ASSIGNING FIELD-SYMBOL(<ls_mod>).
+      <ls_mod>-first_key = <ls_buffer>-instance-firstkey.
+      <ls_mod>-first_field = <ls_buffer>-instance-firstfield.
+    ENDLOOP.
+
+    IF lt_mod IS NOT INITIAL.
+      MODIFY zpru_1st_node FROM TABLE @lt_mod.
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD cleanup.

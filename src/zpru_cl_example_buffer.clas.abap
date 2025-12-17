@@ -5,6 +5,8 @@ CLASS zpru_cl_example_buffer DEFINITION
   PUBLIC SECTION.
     TYPES: BEGIN OF ts_first_node,
              instance TYPE zr_pru_1st_node,
+             cid      TYPE abp_behv_cid,
+             pid      TYPE abp_behv_pid,
              changed  TYPE abap_bool,
              deleted  TYPE abap_bool,
            END OF ts_first_node.

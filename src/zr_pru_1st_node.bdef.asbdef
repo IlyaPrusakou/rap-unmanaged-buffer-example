@@ -10,7 +10,7 @@ authorization master ( instance )
   create ( authorization : global );
   update;
   delete;
-  field ( readonly ) FirstKey;
+  field ( readonly: update ) FirstKey;
   association _par1to2 { create; }
 }
 
@@ -22,7 +22,7 @@ authorization dependent by _par2to1
 {
   update;
   delete;
-  field ( readonly ) FirstKey, SecondKey;
+  field ( readonly: update ) FirstKey, SecondKey;
   association _par2to1;
   association _par2to3 { create; }
 }
@@ -35,7 +35,7 @@ authorization dependent by _toRoot
 {
   update;
   delete;
-  field ( readonly ) FirstKey, SecondKey, ThirdKey;
+  field ( readonly: update ) FirstKey, SecondKey, ThirdKey;
   association _par3to2;
   association _toRoot;
   association _par3to4 { create; }
@@ -49,7 +49,7 @@ authorization dependent by _toRoot
 {
   update;
   delete;
-  field ( readonly ) FirstKey, SecondKey, ThirdKey, FourthKey;
+  field ( readonly: update ) FirstKey, SecondKey, ThirdKey, FourthKey;
   association _par4to3;
     association _toRoot;
 }
