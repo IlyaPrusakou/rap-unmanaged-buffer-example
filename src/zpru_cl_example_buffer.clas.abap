@@ -3,30 +3,65 @@ CLASS zpru_cl_example_buffer DEFINITION
   CREATE PUBLIC.
 
   PUBLIC SECTION.
+
+    TYPES: BEGIN OF ts_first_node_db_keys,
+             firstkey TYPE zr_pru_1st_node-firstkey,
+           END OF ts_first_node_db_keys.
+
+    TYPES: BEGIN OF ts_second_node_db_keys,
+             firstkey  TYPE zr_pru_2nd_node-firstkey,
+             secondkey TYPE zr_pru_2nd_node-secondkey,
+           END OF ts_second_node_db_keys.
+
+    TYPES: BEGIN OF ts_third_node_db_keys,
+             firstkey  TYPE zr_pru_3rd_node-firstkey,
+             secondkey TYPE zr_pru_3rd_node-secondkey,
+             thirdkey  TYPE zr_pru_3rd_node-thirdkey,
+           END OF ts_third_node_db_keys.
+
+    TYPES: BEGIN OF ts_fourth_node_db_keys,
+             firstkey  TYPE zr_pru_4th_node-firstkey,
+             secondkey TYPE zr_pru_4th_node-secondkey,
+             thirdkey  TYPE zr_pru_4th_node-thirdkey,
+             fourthkey TYPE zr_pru_4th_node-fourthkey,
+           END OF ts_fourth_node_db_keys.
+
     TYPES: BEGIN OF ts_first_node,
-             instance TYPE zr_pru_1st_node,
-             cid      TYPE abp_behv_cid,
-             pid      TYPE abp_behv_pid,
-             changed  TYPE abap_bool,
-             deleted  TYPE abap_bool,
+             instance  TYPE zr_pru_1st_node,
+             cid       TYPE abp_behv_cid,
+             pid       TYPE abp_behv_pid,
+             final_key TYPE ts_first_node_db_keys,
+             changed   TYPE abap_bool,
+             deleted   TYPE abap_bool,
            END OF ts_first_node.
 
     TYPES: BEGIN OF ts_second_node,
-             instance TYPE zr_pru_2nd_node,
-             changed  TYPE abap_bool,
-             deleted  TYPE abap_bool,
+             instance  TYPE zr_pru_2nd_node,
+             cid       TYPE abp_behv_cid,
+             pid       TYPE abp_behv_pid,
+             pidparent TYPE abp_behv_pid,
+             final_key TYPE ts_second_node_db_keys,
+             changed   TYPE abap_bool,
+             deleted   TYPE abap_bool,
            END OF ts_second_node.
 
     TYPES: BEGIN OF ts_third_node,
-             instance TYPE zr_pru_3rd_node,
-             changed  TYPE abap_bool,
-             deleted  TYPE abap_bool,
+             instance  TYPE zr_pru_3rd_node,
+             cid       TYPE abp_behv_cid,
+             pid       TYPE abp_behv_pid,
+             pidparent TYPE abp_behv_pid,
+             final_key TYPE ts_third_node_db_keys,
+             changed   TYPE abap_bool,
+             deleted   TYPE abap_bool,
            END OF ts_third_node.
 
     TYPES: BEGIN OF ts_fourth_node,
-             instance TYPE zr_pru_4th_node,
-             changed  TYPE abap_bool,
-             deleted  TYPE abap_bool,
+             instance  TYPE zr_pru_4th_node,
+             pid       TYPE abp_behv_pid,
+             pidparent TYPE abp_behv_pid,
+             final_key TYPE ts_fourth_node_db_keys,
+             changed   TYPE abap_bool,
+             deleted   TYPE abap_bool,
            END OF ts_fourth_node.
 
     TYPES tt_first_node  TYPE TABLE OF ts_first_node WITH EMPTY KEY.
@@ -39,29 +74,23 @@ CLASS zpru_cl_example_buffer DEFINITION
     CLASS-DATA st_third_node  TYPE tt_third_node.
     CLASS-DATA st_fourth_node TYPE tt_fourth_node.
 
-    TYPES: BEGIN OF ts_first_node_keys,
-             firstkey TYPE zr_pru_1st_node-firstkey,
-           END OF ts_first_node_keys.
+    TYPES: BEGIN OF ts_first_node_keys.
+             INCLUDE TYPE ts_first_node_db_keys.
+    TYPES: END OF ts_first_node_keys.
 
-    TYPES: BEGIN OF ts_second_node_keys,
-             firstkey  TYPE zr_pru_2nd_node-firstkey,
-             secondkey TYPE zr_pru_2nd_node-secondkey,
-             full_key  TYPE abap_bool,
+    TYPES: BEGIN OF ts_second_node_keys.
+             INCLUDE TYPE ts_second_node_db_keys.
+    TYPES:   full_key TYPE abap_bool,
            END OF ts_second_node_keys.
 
-    TYPES: BEGIN OF ts_third_node_keys,
-             firstkey  TYPE zr_pru_3rd_node-firstkey,
-             secondkey TYPE zr_pru_3rd_node-secondkey,
-             thirdkey  TYPE zr_pru_3rd_node-thirdkey,
-             full_key  TYPE abap_bool,
+    TYPES: BEGIN OF ts_third_node_keys.
+             INCLUDE TYPE ts_third_node_db_keys.
+    TYPES:   full_key TYPE abap_bool,
            END OF ts_third_node_keys.
 
-    TYPES: BEGIN OF ts_fourth_node_keys,
-             firstkey  TYPE zr_pru_4th_node-firstkey,
-             secondkey TYPE zr_pru_4th_node-secondkey,
-             thirdkey  TYPE zr_pru_4th_node-thirdkey,
-             fourthkey TYPE zr_pru_4th_node-fourthkey,
-             full_key  TYPE abap_bool,
+    TYPES: BEGIN OF ts_fourth_node_keys.
+             INCLUDE TYPE ts_fourth_node_db_keys.
+    TYPES:   full_key TYPE abap_bool,
            END OF ts_fourth_node_keys.
 
     TYPES tt_first_node_keys  TYPE TABLE OF ts_first_node_keys WITH EMPTY KEY.
